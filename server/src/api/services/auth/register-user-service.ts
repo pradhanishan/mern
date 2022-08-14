@@ -11,25 +11,26 @@ type TRegisterUser = {
 };
 
 const registerUser = async (req: Request, res: Response) => {
-  const { username, password, email } = req.body! as TRegisterUser;
-
-  //   check if a user with same username or email already exists
-  let existingUser;
-
-  existingUser = await User.findOne({ username: username });
-
-  if (existingUser) {
-    return res.status(400).json({ success: false, message: `username ${username} is taken. Please user another username` });
-  }
-
-  existingUser = await User.findOne({ email: email });
-
-  if (existingUser) {
-    return res.status(400).json({ success: false, message: `email address ${email} is taken. Please use another email` });
-  }
-
-  //   generate password hash
   try {
+    const { username, password, email } = req.body! as TRegisterUser;
+
+    //   check if a user with same username or email already exists
+    let existingUser;
+
+    existingUser = await User.findOne({ username: username });
+
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: `username ${username} is taken. Please user another username` });
+    }
+
+    existingUser = await User.findOne({ email: email });
+
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: `email address ${email} is taken. Please use another email` });
+    }
+
+    //   generate password hash
+
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
