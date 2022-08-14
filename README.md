@@ -1,8 +1,8 @@
-# mern
+## mern
 
 This is a skeleton boilerplate project for MERN stack
 
-FRONTEND 
+# FRONTEND 
 
 tools:
 
@@ -14,7 +14,7 @@ concepts covered:
 
 ------------------------------------------------------------------------------------------------
 
-BACKEND 
+# BACKEND 
 
 0. node 
 1. express
@@ -22,7 +22,7 @@ BACKEND
 
 -------------------------------------------------------------------------------------------------
 
-DATABASE 
+# DATABASE 
 
 0. mongodb
 1. mongoose
