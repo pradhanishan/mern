@@ -6,9 +6,9 @@ FRONTEND
 
 tools:
 
-# react
-# react native
-# typescript
+0. react
+1. react native
+2. typescript
 
 concepts covered:
 
@@ -16,14 +16,14 @@ concepts covered:
 
 BACKEND 
 
-# node 
-# express
-# typescript
+0. node 
+1. express
+2. typescript
 
 -------------------------------------------------------------------------------------------------
 
 DATABASE 
 
-# mongodb
-# mongoose
+0. mongodb
+1. mongoose
 
