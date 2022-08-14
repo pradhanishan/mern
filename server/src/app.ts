@@ -17,6 +17,7 @@ app.use(json());
 // routes
 app.use("/api-docs", apiDocumentationRoute);
 app.use("/quotes", quotesRoute);
+app.use("/auth", authRoute);
 
 const connectionString: string = `mongodb+srv://${env.DB_USER}:${env.DB_PASSWORD}@cluster0.umh4j1f.mongodb.net/${env.DATABASE_NAME}?retryWrites=true&w=majority`;
 
