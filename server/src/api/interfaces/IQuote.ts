@@ -1,5 +1,8 @@
 interface IQuote {
-  quote: "string";
+  quote: string;
+  likes: number;
+  dislikes: number;
+  anonymous: boolean;
 }
 
 export default IQuote;
