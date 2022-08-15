@@ -45,7 +45,7 @@ const apiDetails: TApiDetail = [
         _id: "quotes-get",
         path: "http://localhost:5000/quotes",
         method: "GET",
-        header: "Authorization",
+        header: "Authorization - access token (jwt)",
         responses: [
           {
             _id: "quotes-get-response-0",
@@ -62,13 +62,13 @@ const apiDetails: TApiDetail = [
             success: "true",
           },
         ],
-        body: [],
+        body: "",
       },
       {
         _id: "quotes-post",
         path: "http://localhost:5000/quotes",
         method: "POST",
-        header: "Authorization",
+        header: "Authorization - access token (jwt)",
         responses: [
           {
             _id: "quotes-post-response-0",
@@ -99,16 +99,13 @@ const apiDetails: TApiDetail = [
             success: "false",
           },
         ],
-        body: [
-          { _id: "quotes-post-body-1", key: "quote", type: "string" },
-          { _id: "quotes-post-body-2", key: "anonymous", type: "boolean" },
-        ],
+        body: "{quote:string,anonymous:boolean}",
       },
       {
         _id: "quotes-delete",
         path: "http://localhost:5000/quotes",
         method: "DELETE",
-        header: "Authorization",
+        header: "Authorization - access token (jwt)",
         responses: [
           {
             _id: "quotes-delete-response-0",
@@ -125,7 +122,7 @@ const apiDetails: TApiDetail = [
             success: "true",
           },
         ],
-        body: [],
+        body: "",
       },
     ],
   },
@@ -138,11 +135,7 @@ const apiDetails: TApiDetail = [
         path: "https://localhost:5000/auth/register",
         method: "POST",
         header: "",
-        body: [
-          { _id: "auth-register-body-0", key: "username", type: "string" },
-          { _id: "auth-register-body-1", key: "password", type: "string" },
-          { _id: "auth-register-body-2", key: "email", type: "string" },
-        ],
+        body: "{username:string, password:string,email:string}",
         responses: [
           {
             _id: "auth-register-response-0",
@@ -172,10 +165,7 @@ const apiDetails: TApiDetail = [
         path: "https://localhost:5000/auth/logout",
         method: "POST",
         header: "",
-        body: [
-          { _id: "auth-login-body-0", key: "identifier", type: "string" },
-          { _id: "auth-login-body-1", key: "password", type: "string" },
-        ],
+        body: "{identifier:string,password:string}",
         responses: [
           {
             _id: "auth-login-response-0",
@@ -204,8 +194,8 @@ const apiDetails: TApiDetail = [
         _id: "refresh-token",
         path: "https://localhost:5000/auth/refresh-token",
         method: "POST",
-        header: "Authorization",
-        body: [],
+        header: "Authorization - access token (jwt)",
+        body: "",
         responses: [
           {
             _id: "auth-refresh-token-response-0",
@@ -215,21 +205,21 @@ const apiDetails: TApiDetail = [
             data: "undefined",
           },
           {
-            _id: "auth-refresh-token-response-0",
+            _id: "auth-refresh-token-response-1",
             statusCode: "403",
             errors: "array of object of errors with property (msg)",
             success: "false",
             data: "undefined",
           },
           {
-            _id: "auth-auth-refresh-token-response-1",
+            _id: "auth-auth-refresh-token-response-2",
             statusCode: "200",
             errors: "undefined",
             success: "true",
             data: "access token",
           },
           {
-            _id: "auth-auth-refresh-token-response-2",
+            _id: "auth-auth-refresh-token-response-3",
             statusCode: "500",
             errors: "array of object of errors with property (msg)",
             success: "false",
@@ -241,8 +231,8 @@ const apiDetails: TApiDetail = [
         _id: "auth-logout",
         path: "https://localhost:5000/auth/logout",
         method: "DELETE",
-        header: "Authorization",
-        body: [],
+        header: "Authorization - refresh token (jwt)",
+        body: "",
         responses: [
           {
             _id: "auth-logout-response-0",

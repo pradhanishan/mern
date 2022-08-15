@@ -15,7 +15,7 @@ type TApiDetail = {
       statusCode: string;
       success: string;
     }[];
-    body: { _id: string; key: string; type: string }[] | [];
+    body: string;
   }[];
 }[];
 

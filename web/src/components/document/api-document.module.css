@@ -1,0 +1,26 @@
+.api-document-keys {
+  font-weight: bold;
+}
+
+.summary {
+  font-weight: bold;
+}
+
+span {
+  margin-right: 0.2rem;
+}
+
+details {
+  background-color: var(--c-dark);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  color: var(--c-font-light);
+  box-shadow: 5px 7px #888888;
+}
+
+details[open] {
+  background-color: var(--c-light);
+  color: black;
+  box-shadow: 0px 0px #888888;
+}
