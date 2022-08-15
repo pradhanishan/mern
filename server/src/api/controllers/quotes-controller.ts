@@ -2,6 +2,7 @@ import Quote from "../models/Quote";
 import { RequestHandler } from "express";
 import * as _db from "../services/db/crd-queries";
 import IQuote from "../interfaces/IQuote";
+import { validationResult } from "express-validator";
 
 export const getAllQuotes: RequestHandler = async (req, res) => {
   try {
@@ -14,6 +15,10 @@ export const getAllQuotes: RequestHandler = async (req, res) => {
 
 export const addNewQuote: RequestHandler = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     const addParams: IQuote = {
       quote: req.body.quote! as string,
       likes: 0,
@@ -29,6 +34,10 @@ export const addNewQuote: RequestHandler = async (req, res) => {
 
 export const deleteQuote: RequestHandler = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     const { id } = req.body!;
     await _db.deleteById(Quote, id);
     return res.status(200).json({ success: true });
