@@ -20,11 +20,13 @@ router.post(
 router.post(
   "/login",
   body("identifier").if(body("identifier").contains("@")).isEmail(),
-  body("identifier").if(body("identifier").not().contains("@")).isAlphanumeric(),
+  body("identifier").if(body("identifier").not().contains("@")).isAlphanumeric().isLength({ min: 1, max: 30 }),
   body("password").isStrongPassword(),
   loginUser
 );
+
 router.post("/refresh-token", refreshUserAccessToken);
+
 router.delete("/logout", authenticateUserAccessToken, logoutUser);
 
 export default router;

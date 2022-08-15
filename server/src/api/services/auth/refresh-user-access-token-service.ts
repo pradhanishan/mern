@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 
 const refreshUserAccessToken = (req: Request, res: Response) => {
   try {
+    if (!req.headers.authorization) {
+      return res.status(400).json({ success: false, message: "missing access token in header" });
+    }
     const requestToken: string = req.headers.authorization!.split(" ")[1];
     jwt.verify(requestToken, env.REFRESH_TOKEN as string, (err, user) => {
       if (err) {
@@ -11,7 +14,9 @@ const refreshUserAccessToken = (req: Request, res: Response) => {
       }
       // @ts-ignore: missing prop error
       const accessToken = jwt.sign({ user: user.userId }, env.ACCESS_TOKEN as string, { expiresIn: "1800s" });
-      return res.status(200).json({ success: true, message: `authentication successful`, data: { accessToken: `bearer ${accessToken}` } });
+      return res
+        .status(200)
+        .json({ success: true, message: `authentication successful`, data: { accessToken: `bearer ${accessToken}` } });
     });
   } catch {
     return res.status(500).json({ success: "false", message: `an internal service error occured` });

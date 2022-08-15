@@ -4,6 +4,9 @@ import User from "../../models/User";
 const logoutUser = async (req: Request, res: Response) => {
   try {
     const id: string = res.locals.userId! as string;
+    if (!id) {
+      return res.status(400).json({ success: false, message: `invalid request` });
+    }
     await User.updateOne({ _id: id }, { refreshToken: null });
     return res.status(200).json({ success: true, message: `logged out successfully` });
   } catch {
