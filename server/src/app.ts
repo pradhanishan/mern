@@ -14,6 +14,7 @@ app.use(urlencoded({ extended: true }));
 app.use(json());
 
 // routes
+
 app.use("/quotes", quotesRoute);
 app.use("/auth", authRoute);
 
