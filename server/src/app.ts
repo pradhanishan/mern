@@ -7,7 +7,6 @@ import * as env from "./config/env-config";
 // routes
 import quotesRoute from "./api/routes/quotes-route";
 import authRoute from "./api/routes/auth-route";
-import apiDocumentationRoute from "./api/routes/api-documentation-route";
 
 const app = express();
 app.use(cors());
@@ -15,7 +14,6 @@ app.use(urlencoded({ extended: true }));
 app.use(json());
 
 // routes
-app.use("/api-docs", apiDocumentationRoute);
 app.use("/quotes", quotesRoute);
 app.use("/auth", authRoute);
 
