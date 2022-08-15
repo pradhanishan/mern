@@ -15,7 +15,7 @@ const loginUser = async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array(), success: false });
     }
     const { identifier, password } = req.body! as TLoginUser;
 
@@ -27,48 +27,32 @@ const loginUser = async (req: Request, res: Response) => {
     if (!loginUser) {
       return res.status(403).json({
         success: false,
-        message: `user ${identifier} does not exist.}`,
+        errors: [{ msg: `user ${identifier} does not exist.}`, success: false }],
       });
     }
     //   validate user's password
-    const isPasswordValid: boolean = await bcrypt.compare(
-      password,
-      loginUser.hashedPassword
-    );
+    const isPasswordValid: boolean = await bcrypt.compare(password, loginUser.hashedPassword);
 
     if (!isPasswordValid) {
-      return res
-        .status(403)
-        .json({ success: false, message: `invalid credentials` });
+      return res.status(403).json({ success: false, message: `invalid credentials` });
     }
     //   generate access and refresh tokens
 
-    const accessToken = jwt.sign(
-      { userId: loginUser._id!.toString() },
-      env.ACCESS_TOKEN as string,
-      { expiresIn: "1800s" }
-    );
-    const refreshToken = jwt.sign(
-      { userId: loginUser._id!.toString() },
-      env.REFRESH_TOKEN as string
-    );
+    const accessToken = jwt.sign({ userId: loginUser._id!.toString() }, env.ACCESS_TOKEN as string, {
+      expiresIn: "1800s",
+    });
+    const refreshToken = jwt.sign({ userId: loginUser._id!.toString() }, env.REFRESH_TOKEN as string);
     console.log(refreshToken);
-    await User.updateOne(
-      { _id: loginUser._id },
-      { refreshToken: refreshToken }
-    );
+    await User.updateOne({ _id: loginUser._id }, { refreshToken: refreshToken });
     return res.status(200).json({
       success: true,
-      message: "logged in successfully",
       data: {
         refreshToken: `bearer ${refreshToken}`,
         accessToken: `bearer ${accessToken}`,
       },
     });
   } catch {
-    return res
-      .status(500)
-      .json({ success: false, message: `an internal server error occured.` });
+    return res.status(500).json({ success: false, errors: [{ msg: `an internal server error occured.` }] });
   }
 };
 

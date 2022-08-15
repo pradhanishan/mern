@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import mongoose from "mongoose";
 import { json, urlencoded } from "body-parser";
 import cors from "cors";

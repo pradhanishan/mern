@@ -1,0 +1,17 @@
+/* style for app component wrapper */
+.app {
+  background-color: var(--c-primary);
+  min-height: 100vh;
+}
+
+/* style for component wrapper - <main> tag -  that contains components rendered inside app body */
+.app-body {
+  padding: 1rem;
+}
+
+@media screen and (min-width: 769px) {
+  /* contents insidee main should have a margin of 10% on left and right on bigger screens */
+  .app-body {
+    margin: 0 10%;
+  }
+}

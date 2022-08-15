@@ -9,7 +9,14 @@ export const getAllQuotes: RequestHandler = async (req, res) => {
     const quotes = await _db.getAll(Quote);
     return res.status(200).json({ data: quotes, success: true });
   } catch {
-    return res.status(400).json({ success: false });
+    return res.status(500).json({
+      errors: [
+        {
+          msg: "Internal server error",
+        },
+      ],
+      success: false,
+    });
   }
 };
 
@@ -17,7 +24,7 @@ export const addNewQuote: RequestHandler = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array(), success: false });
     }
     const addParams: IQuote = {
       quote: req.body.quote! as string,
@@ -28,7 +35,14 @@ export const addNewQuote: RequestHandler = async (req, res) => {
     await _db.add(Quote, { ...addParams });
     return res.status(201).json({ success: true });
   } catch {
-    return res.status(400).json({ success: false });
+    return res.status(500).json({
+      errors: [
+        {
+          msg: "Internal server error",
+        },
+      ],
+      success: false,
+    });
   }
 };
 
@@ -42,6 +56,13 @@ export const deleteQuote: RequestHandler = async (req, res) => {
     await _db.deleteById(Quote, id);
     return res.status(200).json({ success: true });
   } catch {
-    return res.status(400).json({ success: false });
+    return res.status(400).json({
+      errors: [
+        {
+          msg: "invalid id",
+        },
+      ],
+      success: false,
+    });
   }
 };

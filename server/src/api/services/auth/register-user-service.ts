@@ -26,23 +26,19 @@ const registerUser = async (req: Request, res: Response) => {
     existingUser = await User.findOne({ username: username });
 
     if (existingUser) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: `username ${username} is taken. Please user another username`,
-        });
+      return res.status(400).json({
+        success: false,
+        errors: [{ msg: `username ${username} is taken. Please user another username` }],
+      });
     }
 
     existingUser = await User.findOne({ email: email });
 
     if (existingUser) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: `email address ${email} is taken. Please use another email`,
-        });
+      return res.status(400).json({
+        success: false,
+        errors: [{ msg: `email address ${email} is taken. Please use another email` }],
+      });
     }
 
     //   generate password hash
@@ -58,16 +54,11 @@ const registerUser = async (req: Request, res: Response) => {
 
     // create new user
     await User.create({ ...newUser });
-    return res
-      .status(201)
-      .json({
-        success: true,
-        message: `user registered successfully. login to continue`,
-      });
+    return res.status(201).json({
+      success: true,
+    });
   } catch {
-    return res
-      .status(500)
-      .json({ success: false, message: `an internal server error occured` });
+    return res.status(500).json({ success: false, errors: [{ msg: `an internal server error occured` }] });
   }
 };
 
