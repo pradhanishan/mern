@@ -21,8 +21,8 @@ const ApiDocument: FC<IApiDocumentProps> = (props) => {
               <span className={classes.summary}>{apiDetail.title}</span>
             </summary>
             <div>
-              <Table bordered responsive>
-                <thead>
+              <Table bordered responsive className="mt-3">
+                <thead className={classes["table-header"]}>
                   <tr>
                     <th>path</th>
                     <th>method</th>

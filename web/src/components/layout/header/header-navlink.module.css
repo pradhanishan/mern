@@ -1,0 +1,20 @@
+.active-link {
+  color: var(--c-secondary);
+}
+
+.inactive-link {
+  color: var(--c-font-light);
+}
+
+.active-link,
+.inactive-link {
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.active-link:hover,
+.active-link:focus,
+.inactive-link:hover,
+.inactive-link:focus {
+  color: var(--c-secondary);
+}
