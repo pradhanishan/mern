@@ -22,7 +22,7 @@ const HeaderNavbar: FC = () => {
           </Nav>
           <Nav>
             <HeaderNavLink link={routes.register} content="Register" />
-            <HeaderNavLink link={routes.login} content="Login" />
+            <HeaderNavLink link={routes.auth} content="Auth" />
           </Nav>
         </Navbar.Collapse>
       </Container>

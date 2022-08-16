@@ -4,7 +4,7 @@ const routes = {
   about: "/about",
   support: "/support",
   documentation: "/documentation",
-  login: "/login",
+  auth: "/auth",
   register: "/register",
   none: "*",
 };

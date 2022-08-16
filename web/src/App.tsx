@@ -10,9 +10,9 @@ import DashboardPage from "./pages/DashboardPage";
 import AboutPage from "./pages/AboutPage";
 import DocumentationPage from "./pages/DocumentationPage";
 import SupportPage from "./pages/SupportPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/AuthPage";
 import routes from "./config/route-config";
+import AuthPage from "./pages/AuthPage";
 
 const App: FC = () => {
   return (
@@ -25,8 +25,7 @@ const App: FC = () => {
           <Route path={routes.about} element={<AboutPage />} />
           <Route path={routes.support} element={<SupportPage />} />
           <Route path={routes.documentation} element={<DocumentationPage />} />
-          <Route path={routes.login} element={<LoginPage />} />
-          <Route path={routes.register} element={<RegisterPage />} />
+          <Route path={routes.auth} element={<AuthPage />} />
           <Route path={routes.none} element={<HomePage />} />
         </Routes>
       </main>

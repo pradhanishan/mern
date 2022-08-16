@@ -1,0 +1,30 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.button-group-button {
+  width: 48%;
+}
+
+.out-group-button {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.button-success {
+  background-color: var(--c-dark);
+}
+
+.button-danger {
+  background-color: var(--c-accent);
+}
