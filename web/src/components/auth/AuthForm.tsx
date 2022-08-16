@@ -6,6 +6,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import validateLoginFormInput from "../../utilities/validateLoginFormInput";
 import validateRegistrationFormInput from "../../utilities/validateRegistrationFormInput";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { authActions } from "../../redux/slices/auth-slice";
 
 interface IAuthFormProps {
   authMode: { login: boolean; register: boolean };
@@ -14,6 +16,7 @@ interface IAuthFormProps {
 }
 
 const AuthForm: FC<IAuthFormProps> = (props) => {
+  const dispatch = useAppDispatch();
   // state to check form input validity
   const [formValidity, setFormValidity] = useState<{ isValid: boolean; errors: { msg: string }[] }>({
     isValid: true,
@@ -109,6 +112,8 @@ const AuthForm: FC<IAuthFormProps> = (props) => {
     }
 
     // front end validation passed -> send Login request here
+    localStorage.setItem("isLoggedIn", "true");
+    dispatch(authActions.login());
   };
 
   // remove form errors after a 4 seconds...

@@ -5,8 +5,10 @@ import Navbar from "react-bootstrap/Navbar";
 import classes from "./header-navbar.module.css";
 import HeaderNavLink from "./HeaderNavLink";
 import routes from "../../../config/route-config";
+import { useAppSelector } from "../../../hooks/useAppSelector";
 
 const HeaderNavbar: FC = () => {
+  const auth = useAppSelector((state) => state.auth);
   return (
     <Navbar collapseOnSelect expand="lg" variant="dark" className={classes["navbar"]}>
       <Container>
@@ -21,7 +23,7 @@ const HeaderNavbar: FC = () => {
             <HeaderNavLink link={routes.support} content="Support" />
           </Nav>
           <Nav>
-            <HeaderNavLink link={routes.auth} content="Login" />
+            <HeaderNavLink link={routes.auth} content={!auth.isLoggedIn ? "Login" : "Logout"} />
           </Nav>
         </Navbar.Collapse>
       </Container>

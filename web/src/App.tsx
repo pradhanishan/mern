@@ -10,7 +10,6 @@ import DashboardPage from "./pages/DashboardPage";
 import AboutPage from "./pages/AboutPage";
 import DocumentationPage from "./pages/DocumentationPage";
 import SupportPage from "./pages/SupportPage";
-import LoginPage from "./pages/AuthPage";
 import routes from "./config/route-config";
 import AuthPage from "./pages/AuthPage";
 
