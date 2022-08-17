@@ -1,0 +1,22 @@
+.card-container {
+  background-color: var(--c-dark);
+  color: var(--c-font-light);
+  border-radius: 8px;
+  padding: 1rem;
+  border: 3px solid var(--c-secondary);
+}
+
+.card-body {
+  text-align: center;
+}
+
+.card-tail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-container:hover,
+.card-container:focus {
+  filter: brightness(95%);
+}
