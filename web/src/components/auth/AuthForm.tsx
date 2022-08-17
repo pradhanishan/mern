@@ -108,12 +108,12 @@ const AuthForm: FC<IAuthFormProps> = (props) => {
           isValid: validationResponse.validated,
           errors: validationResponse.errors,
         });
+        return;
       }
+      // front end validation passed -> send Login request here
+      localStorage.setItem("isLoggedIn", "true");
+      dispatch(authActions.login());
     }
-
-    // front end validation passed -> send Login request here
-    localStorage.setItem("isLoggedIn", "true");
-    dispatch(authActions.login());
   };
 
   // remove form errors after a 4 seconds...

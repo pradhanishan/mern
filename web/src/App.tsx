@@ -12,10 +12,12 @@ import DocumentationPage from "./pages/DocumentationPage";
 import SupportPage from "./pages/SupportPage";
 import routes from "./config/route-config";
 import AuthPage from "./pages/AuthPage";
+import PageModal from "./components/ui/PageModal";
 
 const App: FC = () => {
   return (
     <div className={classes.app}>
+      <PageModal />
       <Header />
       <main className={classes["app-body"]}>
         <Routes>

@@ -5,7 +5,6 @@ import HeaderNavLink from "./HeaderNavLink";
 import routes from "../../../config/route-config";
 import Logout from "../../auth/LogoutButton";
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import Button from "react-bootstrap/Button";
 import HeaderDrawer from "./HeaderDrawer";
 import { MdMenu } from "react-icons/md";
 

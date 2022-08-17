@@ -1,27 +1,27 @@
 import React, { FC } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { modalActions } from "../../redux/slices/modal-slice";
+import { Link } from "react-router-dom";
 
-interface IPageModalProps {
-  show: boolean;
-  heading: string;
-  body: string;
-  redirectUrl: string;
-  showHandler: (event: React.MouseEvent) => void;
-}
+const PageModal: FC = () => {
+  const dispatch = useAppDispatch();
+  const modal = useAppSelector((state) => state.modal);
 
-const PageModal: FC<IPageModalProps> = (props) => {
+  const closeModal = () => {
+    dispatch(modalActions.close());
+  };
+
   return (
-    <Modal show={props.show} backdrop="static" keyboard={false}>
-      <Modal.Header closeButton>
-        <Modal.Title>Modal title</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>I will not close if you click outside me. Don't even try to press escape key.</Modal.Body>
+    <Modal show={modal.isOpen} onHide={closeModal} backdrop="static" keyboard={false} centered>
+      <h3 className="m-3">{modal.title}</h3>
+      <Modal.Body>{modal.content}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.showHandler}>
-          Close
-        </Button>
-        <Button variant="primary">Understood</Button>
+        <Link to={modal.link} onClick={closeModal}>
+          <Button variant="outline-secondary">close</Button>
+        </Link>
       </Modal.Footer>
     </Modal>
   );
