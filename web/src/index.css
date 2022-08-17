@@ -31,3 +31,23 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+/*
+ add this class to hide elements that need not be displayed
+ in smaller devices such as mobiles and tablets 
+ */
+@media screen and (max-width: 768px) {
+  .hide-on-smaller-device {
+    display: none;
+  }
+}
+
+/*
+ add this class to hide elements that need not be displayed
+ in larger devices such as large tablets, laptops or desktops.
+ */
+@media screen and (min-width: 769px) {
+  .hide-on-larger-device {
+    display: none;
+  }
+}

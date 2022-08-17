@@ -18,3 +18,9 @@
 .inactive-link:focus {
   color: var(--c-secondary);
 }
+
+.drawer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

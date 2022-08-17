@@ -1,3 +1,7 @@
 .navbar {
   background-color: var(--c-dark);
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  justify-content: space-between;
 }
