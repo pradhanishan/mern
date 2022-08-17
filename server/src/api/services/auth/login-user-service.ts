@@ -34,7 +34,7 @@ const loginUser = async (req: Request, res: Response) => {
     const isPasswordValid: boolean = await bcrypt.compare(password, loginUser.hashedPassword);
 
     if (!isPasswordValid) {
-      return res.status(403).json({ success: false, message: `invalid credentials` });
+      return res.status(403).json({ success: false, errors: [{ msg: `invalid credentials` }] });
     }
     //   generate access and refresh tokens
 

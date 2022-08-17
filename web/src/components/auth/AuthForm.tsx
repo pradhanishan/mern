@@ -8,6 +8,8 @@ import validateLoginFormInput from "../../utilities/validateLoginFormInput";
 import validateRegistrationFormInput from "../../utilities/validateRegistrationFormInput";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { authActions } from "../../redux/slices/auth-slice";
+import { modalActions } from "../../redux/slices/modal-slice";
+import applicationConfig from "../../config/application-config";
 
 interface IAuthFormProps {
   authMode: { login: boolean; register: boolean };
@@ -73,7 +75,7 @@ const AuthForm: FC<IAuthFormProps> = (props) => {
   };
 
   // handle form submit
-  const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
+  const formSubmitHandler = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     // register
     if (props.authMode.register) {
@@ -95,6 +97,31 @@ const AuthForm: FC<IAuthFormProps> = (props) => {
         });
       }
       // front end validation passed -> send Register request here
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...registrationData }),
+      };
+      const response = await fetch(`${applicationConfig.serverUrl}/auth/register`, requestOptions);
+      const responseData = await response.json();
+      if (!responseData.success) {
+        setFormValidity({
+          isValid: false,
+          errors: [...responseData.errors],
+        });
+        return;
+      }
+      dispatch(
+        modalActions.open({
+          isOpen: true,
+          title: "Success",
+          content: "Registered successfully. Login to continue",
+          link: "/auth",
+        })
+      );
+      // @ts-expect-error
+      props.handleEnableLoginMode();
+      resetFormHandler();
     }
     // login
     if (props.authMode.login) {
@@ -111,6 +138,32 @@ const AuthForm: FC<IAuthFormProps> = (props) => {
         return;
       }
       // front end validation passed -> send Login request here
+
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...loginData }),
+      };
+      const response = await fetch(`${applicationConfig.serverUrl}/auth/login`, requestOptions);
+      const responseData = await response.json();
+      console.log(responseData);
+      if (!responseData.success) {
+        setFormValidity({
+          isValid: false,
+          errors: [...responseData.errors],
+        });
+        return;
+      }
+      dispatch(
+        modalActions.open({
+          isOpen: true,
+          title: "Success",
+          content: "logged in successfully",
+          link: "/",
+        })
+      );
+      localStorage.setItem("accessToken", responseData.data.accessToken);
+      localStorage.setItem("refreshToken", responseData.data.refreshToken);
       localStorage.setItem("isLoggedIn", "true");
       dispatch(authActions.login());
     }
