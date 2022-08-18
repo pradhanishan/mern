@@ -1,8 +1,8 @@
 type TResponse = {
   statusCode: number;
   success: boolean;
-  message: string;
-  data: {};
+  errors?: { msg: string }[];
+  data?: any;
 };
 
 export default TResponse;

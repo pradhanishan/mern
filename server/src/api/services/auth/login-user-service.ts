@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import * as env from "../../../config/env-config";
 import { validationResult } from "express-validator";
+import TResponse from "../../types/TResponse";
 
 type TLoginUser = {
   identifier: string;
@@ -15,7 +16,12 @@ const loginUser = async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array(), success: false });
+      let response: TResponse = {
+        statusCode: 400,
+        success: false,
+        errors: errors.array(),
+      };
+      return res.status(400).json({ ...response });
     }
     const { identifier, password } = req.body! as TLoginUser;
 
@@ -25,34 +31,51 @@ const loginUser = async (req: Request, res: Response) => {
     })) as IUser;
 
     if (!loginUser) {
-      return res.status(403).json({
+      let response: TResponse = {
+        statusCode: 403,
         success: false,
-        errors: [{ msg: `user ${identifier} does not exist.}`, success: false }],
-      });
+        errors: [{ msg: `user ${identifier} does not exist.}` }],
+      };
+      return res.status(403).json({ ...response });
     }
     //   validate user's password
     const isPasswordValid: boolean = await bcrypt.compare(password, loginUser.hashedPassword);
 
     if (!isPasswordValid) {
-      return res.status(403).json({ success: false, errors: [{ msg: `invalid credentials` }] });
+      let response: TResponse = {
+        statusCode: 403,
+        success: false,
+        errors: [{ msg: `invalid credentials` }],
+      };
+      return res.status(403).json({ ...response });
     }
     //   generate access and refresh tokens
 
     const accessToken = jwt.sign({ userId: loginUser._id!.toString() }, env.ACCESS_TOKEN as string, {
-      expiresIn: "1800s",
+      expiresIn: "18s",
     });
     const refreshToken = jwt.sign({ userId: loginUser._id!.toString() }, env.REFRESH_TOKEN as string);
-    console.log(refreshToken);
+
     await User.updateOne({ _id: loginUser._id }, { refreshToken: refreshToken });
-    return res.status(200).json({
+    let response: TResponse = {
+      statusCode: 200,
       success: true,
       data: {
         refreshToken: `bearer ${refreshToken}`,
         accessToken: `bearer ${accessToken}`,
       },
+      errors: [],
+    };
+    return res.status(200).json({
+      ...response,
     });
   } catch {
-    return res.status(500).json({ success: false, errors: [{ msg: `an internal server error occured.` }] });
+    let response: TResponse = {
+      statusCode: 500,
+      success: false,
+      errors: [{ msg: `an internal server error occured.` }],
+    };
+    return res.status(500).json({ ...response });
   }
 };
 

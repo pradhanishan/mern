@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import IUser from "../../interfaces/IUser";
 
 import { validationResult } from "express-validator";
+import TResponse from "../../types/TResponse";
 
 // when creating a user, the request body should have a username, password and an email address
 type TRegisterUser = {
@@ -16,7 +17,12 @@ const registerUser = async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      let response: TResponse = {
+        statusCode: 400,
+        success: false,
+        errors: errors.array(),
+      };
+      return res.status(400).json({ ...response });
     }
     const { username, password, email } = req.body! as TRegisterUser;
 
@@ -26,19 +32,23 @@ const registerUser = async (req: Request, res: Response) => {
     existingUser = await User.findOne({ username: username });
 
     if (existingUser) {
-      return res.status(400).json({
+      let response: TResponse = {
+        statusCode: 400,
         success: false,
         errors: [{ msg: `username ${username} is taken. Please user another username` }],
-      });
+      };
+      return res.status(400).json({ ...response });
     }
 
     existingUser = await User.findOne({ email: email });
 
     if (existingUser) {
-      return res.status(400).json({
+      let response: TResponse = {
+        statusCode: 400,
         success: false,
         errors: [{ msg: `email address ${email} is taken. Please use another email` }],
-      });
+      };
+      return res.status(400).json({ ...response });
     }
 
     //   generate password hash
@@ -54,11 +64,18 @@ const registerUser = async (req: Request, res: Response) => {
 
     // create new user
     await User.create({ ...newUser });
-    return res.status(201).json({
+    let response: TResponse = {
+      statusCode: 201,
       success: true,
-    });
+    };
+    return res.status(201).json({ ...response });
   } catch {
-    return res.status(500).json({ success: false, errors: [{ msg: `an internal server error occured` }] });
+    let response: TResponse = {
+      statusCode: 500,
+      success: false,
+      errors: [{ msg: `an internal server error occured` }],
+    };
+    return res.status(500).json({ ...response });
   }
 };
 
