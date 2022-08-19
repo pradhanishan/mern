@@ -10,6 +10,9 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { authActions } from "../../redux/slices/auth-slice";
 import { modalActions } from "../../redux/slices/modal-slice";
 import applicationConfig from "../../config/application-config";
+import TRequest from "../../types/TRequest";
+import TResponse from "../../types/TResponse";
+import sendRequest from "../../utilities/api/sendRequest";
 
 interface IAuthFormProps {
   authMode: { login: boolean; register: boolean };
@@ -20,7 +23,7 @@ interface IAuthFormProps {
 const AuthForm: FC<IAuthFormProps> = (props) => {
   const dispatch = useAppDispatch();
   // state to check form input validity
-  const [formValidity, setFormValidity] = useState<{ isValid: boolean; errors: { msg: string }[] }>({
+  const [formValidity, setFormValidity] = useState<{ isValid: boolean; errors: { msg: string; param?: string }[] }>({
     isValid: true,
     errors: [],
   });
@@ -90,24 +93,28 @@ const AuthForm: FC<IAuthFormProps> = (props) => {
       };
       const validationResponse: { validated: boolean; errors: { msg: string }[] } =
         validateRegistrationFormInput(registrationData);
+      console.log(validationResponse);
       if (!validationResponse.validated) {
         setFormValidity({
           isValid: validationResponse.validated,
           errors: validationResponse.errors,
         });
+        return;
       }
       // front end validation passed -> send Register request here
-      const requestOptions = {
+
+      const request: TRequest = {
         method: "POST",
+        serverUrl: `${applicationConfig.serverUrl}/auth/register`,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...registrationData }),
+        body: { ...registrationData },
       };
-      const response = await fetch(`${applicationConfig.serverUrl}/auth/register`, requestOptions);
-      const responseData = await response.json();
+      const responseData: TResponse = await sendRequest(request);
+      console.log(responseData);
       if (!responseData.success) {
         setFormValidity({
           isValid: false,
-          errors: [...responseData.errors],
+          errors: [...responseData.errors!],
         });
         return;
       }
@@ -139,18 +146,17 @@ const AuthForm: FC<IAuthFormProps> = (props) => {
       }
       // front end validation passed -> send Login request here
 
-      const requestOptions = {
+      const request: TRequest = {
+        serverUrl: `${applicationConfig.serverUrl}/auth/login`,
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...loginData }),
+        body: { ...loginData },
       };
-      const response = await fetch(`${applicationConfig.serverUrl}/auth/login`, requestOptions);
-      const responseData = await response.json();
-      console.log(responseData);
+      const responseData = await sendRequest(request);
       if (!responseData.success) {
         setFormValidity({
           isValid: false,
-          errors: [...responseData.errors],
+          errors: [...responseData.errors!],
         });
         return;
       }
@@ -231,7 +237,7 @@ const AuthForm: FC<IAuthFormProps> = (props) => {
           <div className="text-danger">
             <ul>
               {formValidity.errors.map((error) => {
-                return <li key={error.msg}>{error.msg}</li>;
+                return <li key={`${error.msg} {${error.param} || "}`}>{error.msg}</li>;
               })}
             </ul>
           </div>

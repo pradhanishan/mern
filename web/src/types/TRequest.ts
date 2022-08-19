@@ -2,8 +2,8 @@ type TRequest = {
   serverUrl: string;
   method: string;
   headers?: {
-    "Content-Type": string;
-    authorization: string;
+    "Content-Type"?: string;
+    authorization?: string;
   };
   body?: {};
 };

@@ -1,4 +1,4 @@
-import TRequest from "./TRequest";
+import TRequest from "../../types/TRequest";
 import TResponse from "../../types/TResponse";
 import applicationConfig from "../../config/application-config";
 

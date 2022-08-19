@@ -5,7 +5,7 @@ import { authActions } from "../../redux/slices/auth-slice";
 import { modalActions } from "../../redux/slices/modal-slice";
 import applicationConfig from "../../config/application-config";
 import sendRequest from "../../utilities/api/sendRequest";
-import TRequest from "../../utilities/api/TRequest";
+import TRequest from "../../types/TRequest";
 
 const Logout: FC = () => {
   const dispatch = useAppDispatch();
