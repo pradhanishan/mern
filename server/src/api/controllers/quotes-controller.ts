@@ -26,6 +26,7 @@ export const getAllQuotes: RequestHandler = async (req, res) => {
 
 export const addNewQuote: RequestHandler = async (req, res) => {
   try {
+    console.log("Reached");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       let response: TResponse = {
@@ -35,11 +36,14 @@ export const addNewQuote: RequestHandler = async (req, res) => {
       };
       return res.status(400).json({ ...response });
     }
+    let dt = new Date();
     const addParams: IQuote = {
       quote: req.body.quote! as string,
-      likes: 0,
-      dislikes: 0,
+      likers: [],
+      dislikers: [],
       anonymous: req.body.anonymous! as boolean,
+      author: res.locals.userId,
+      addedDate: dt.toUTCString(),
     };
     await _db.add(Quote, { ...addParams });
     let response: TResponse = {

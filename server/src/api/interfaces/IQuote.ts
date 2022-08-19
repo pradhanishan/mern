@@ -1,8 +1,11 @@
+import { Types } from "mongoose";
 interface IQuote {
   quote: string;
-  likes: number;
-  dislikes: number;
+  likers: [];
+  dislikers: [];
   anonymous: boolean;
+  author: any;
+  addedDate: string;
 }
 
 export default IQuote;

@@ -4,7 +4,13 @@ import authenticateUserAccessToken from "../services/auth/authenticate-user-acce
 import { body } from "express-validator";
 const router = Router();
 
-router.get("/", authenticateUserAccessToken, getAllQuotes);
-router.post("/", authenticateUserAccessToken, body("quote").isLength({ min: 1, max: 280 }), addNewQuote);
+router.get("/", getAllQuotes);
+router.post(
+  "/",
+  authenticateUserAccessToken,
+  body("quote").isLength({ min: 1, max: 280 }),
+  body("anonymous").isBoolean(),
+  addNewQuote
+);
 router.delete("/", authenticateUserAccessToken, body("id").not().isEmpty(), deleteQuote);
 export default router;

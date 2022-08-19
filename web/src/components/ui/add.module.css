@@ -1,0 +1,16 @@
+.add-container {
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.add-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-label,
+.add-check {
+  font-weight: bold;
+  color: var(--c-dark);
+}
