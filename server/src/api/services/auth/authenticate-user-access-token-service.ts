@@ -4,8 +4,6 @@ import * as env from "../../../config/env-config";
 import TResponse from "../../types/TResponse";
 const authenticateUserAccessToken = (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log(req.headers.authorization);
-
     if (!req.headers.authorization) {
       let response: TResponse = {
         statusCode: 400,

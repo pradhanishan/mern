@@ -24,7 +24,7 @@ const refreshUserAccessToken = (req: Request, res: Response) => {
         return res.status(403).json({ ...response });
       }
       // @ts-ignore: missing prop error
-      const accessToken = jwt.sign({ user: user.userId }, env.ACCESS_TOKEN as string, { expiresIn: "1800s" });
+      const accessToken = jwt.sign({ userId: user.userId }, env.ACCESS_TOKEN as string, { expiresIn: "1800s" });
       let response: TResponse = {
         statusCode: 200,
         success: true,

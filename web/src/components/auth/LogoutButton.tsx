@@ -4,6 +4,8 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { authActions } from "../../redux/slices/auth-slice";
 import { modalActions } from "../../redux/slices/modal-slice";
 import applicationConfig from "../../config/application-config";
+import sendRequest from "../../utilities/api/sendRequest";
+import TRequest from "../../utilities/api/TRequest";
 
 const Logout: FC = () => {
   const dispatch = useAppDispatch();
@@ -11,42 +13,28 @@ const Logout: FC = () => {
   //   logout
   const logoutHandler = async (event: React.MouseEvent): Promise<void> => {
     // send logout request
-    console.log(localStorage.getItem("accessToken"));
-    const requestOptions = {
+    const request: TRequest = {
       method: "DELETE",
       headers: {
-        authorization: localStorage.getItem("accessToken")!,
+        "Content-Type": "application/json",
+        authorization: localStorage.getItem("accessToken") || "",
       },
+      serverUrl: `${applicationConfig.serverUrl}/auth/logout`,
     };
+    const responseData = await sendRequest(request);
 
-    const response = await fetch(`${applicationConfig.serverUrl}/auth/logout`, requestOptions);
-    const responseData = await response.json();
-
-    if (!responseData.success) {
-      // refresh token here
-      // const refreshRequestOptions = {
-      //   method: "POST",
-      //   headers: {
-      //     authorization: localStorage.getItem("refreshToken")!,
-      //   },
-      // };
-      // const refreshResponse = await fetch(`${applicationConfig.serverUrl}/auth/refresh-token`, refreshRequestOptions);
-      // const refreshResponseData = await refreshResponse.json();
-      // if (!refreshResponseData.success) {
-      //   dispatch(
-      //     modalActions.open({
-      //       isOpen: true,
-      //       title: "Error",
-      //       content: "You are unauthorized to perform this request",
-      //       link: "/",
-      //     })
-      //   );
-      //   return;
-      // }
+    if (responseData.success) {
+      localStorage.clear();
+      dispatch(authActions.logout());
+      dispatch(
+        modalActions.open({
+          isOpen: true,
+          link: "/authorization",
+          title: "Success",
+          content: "Logged out successfully!",
+        })
+      );
     }
-
-    dispatch(authActions.logout());
-    dispatch(modalActions.open({ isOpen: true, title: "Success", content: "Logged out successfully", link: "/" }));
   };
 
   return (
