@@ -7,6 +7,7 @@ import { useAppSelector } from "../../../hooks/useAppSelector";
 import { MdHome, MdInfo, MdDashboard, MdContactSupport, MdLogin } from "react-icons/md";
 import { HiDocumentDuplicate } from "react-icons/hi";
 import Logout from "../../auth/LogoutButton";
+import { NavLink } from "react-router-dom";
 
 interface IHeaderDrawerProps {
   show: boolean;
@@ -70,7 +71,11 @@ const HeaderDrawer: FC<IHeaderDrawerProps> = (props) => {
             )}
           </div>
 
-          {auth.isLoggedIn && <Logout />}
+          {auth.isLoggedIn && (
+            <NavLink to="/auth" onClick={props.handleCloseDrawer}>
+              <Logout />
+            </NavLink>
+          )}
         </Offcanvas.Body>
       </Offcanvas>
     </>

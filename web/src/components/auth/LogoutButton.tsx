@@ -29,7 +29,7 @@ const Logout: FC = () => {
       dispatch(
         modalActions.open({
           isOpen: true,
-          link: "/authorization",
+          link: "/auth",
           title: "Success",
           content: "Logged out successfully!",
         })
