@@ -1,9 +1,10 @@
 import { FC } from "react";
 import classes from "./card.module.css";
-import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import { MdReportProblem } from "react-icons/md";
 import Button from "react-bootstrap/Button";
+
+interface ICardProps {}
 
 const Card: FC = () => {
   return (
