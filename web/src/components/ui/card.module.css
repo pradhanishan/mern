@@ -20,3 +20,9 @@
 .card-container:focus {
   filter: brightness(95%);
 }
+
+.buttons-body {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

@@ -4,7 +4,7 @@ interface IQuote {
   likers: [];
   dislikers: [];
   anonymous: boolean;
-  author: any;
+  author: string;
   addedDate: string;
 }
 

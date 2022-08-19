@@ -4,13 +4,30 @@ import * as _db from "../services/db/crd-queries";
 import IQuote from "../interfaces/IQuote";
 import { validationResult } from "express-validator";
 import TResponse from "../types/TResponse";
+import User from "../models/User";
+import IQuotesList from "../interfaces/vms/IQuotesList";
 
 export const getAllQuotes: RequestHandler = async (req, res) => {
   try {
     const quotes = await _db.getAll(Quote);
+
+    let quotesList: IQuotesList[] = [];
+
+    quotes.map((quote) => {
+      let quoteListItem: IQuotesList = {
+        // @ts-ignore: missing prop error
+        _id: quote._id,
+        author: !quote.anonymous ? quote.author : "anonymous",
+        quote: quote.quote,
+        likes: quote.likers.length,
+        dislikes: quote.dislikers.length,
+      };
+      quotesList.push(quoteListItem);
+    });
+
     let response: TResponse = {
       statusCode: 200,
-      data: quotes,
+      data: quotesList,
       success: true,
     };
     return res.status(200).json({ ...response });
@@ -26,7 +43,6 @@ export const getAllQuotes: RequestHandler = async (req, res) => {
 
 export const addNewQuote: RequestHandler = async (req, res) => {
   try {
-    console.log("Reached");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       let response: TResponse = {
@@ -36,13 +52,24 @@ export const addNewQuote: RequestHandler = async (req, res) => {
       };
       return res.status(400).json({ ...response });
     }
+
+    const user = await _db.getById(User, res.locals.userId);
+    if (!user) {
+      let response: TResponse = {
+        statusCode: 400,
+        errors: [{ msg: `invalid user` }],
+        success: false,
+      };
+      return res.status(400).json({ ...response });
+    }
+
     let dt = new Date();
     const addParams: IQuote = {
       quote: req.body.quote! as string,
       likers: [],
       dislikers: [],
       anonymous: req.body.anonymous! as boolean,
-      author: res.locals.userId,
+      author: user.username,
       addedDate: dt.toUTCString(),
     };
     await _db.add(Quote, { ...addParams });

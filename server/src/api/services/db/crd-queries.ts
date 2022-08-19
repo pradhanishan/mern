@@ -5,6 +5,11 @@ export async function getAll<T>(entity: Model<T>): Promise<T[]> {
   return response;
 }
 
+export async function getById<T>(entity: Model<T>, id: Types.ObjectId | string): Promise<T | null> {
+  const response = await entity.findOne({ _id: id });
+  return response;
+}
+
 export async function add<T>(entity: Model<T>, entry: {}): Promise<void> {
   await entity.create({ ...entry });
 }

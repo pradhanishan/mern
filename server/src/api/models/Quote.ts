@@ -6,7 +6,7 @@ const quoteSchema = new Schema<IQuote>({
   likers: [],
   dislikers: [],
   anonymous: { type: Boolean },
-  author: { type: Object, required: true },
+  author: { type: String, required: true },
   addedDate: { type: String, required: true },
 });
 
