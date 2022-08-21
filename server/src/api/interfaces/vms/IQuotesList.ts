@@ -5,6 +5,7 @@ interface IQuotesList {
   quote: string;
   likes: number;
   dislikes: number;
+  likedByMe: boolean;
 }
 
 export default IQuotesList;

@@ -9,7 +9,7 @@ import get from "../utilities/api/get";
 const HomePage: FC = () => {
   const auth = useAppSelector((state) => state.auth);
   const [quotes, setQuotes] = useState<
-    { _id: string; author: string; quote: string; likes: number; dislikes: number }[]
+    { _id: string; author: string; quote: string; likes: number; dislikes: number; likedByMe: boolean }[]
   >([]);
 
   useEffect(() => {
@@ -26,6 +26,8 @@ const HomePage: FC = () => {
     getQuotes();
   }, []);
 
+  console.log(quotes);
+
   return (
     <>
       {auth.isLoggedIn && (
@@ -41,6 +43,7 @@ const HomePage: FC = () => {
                   likes={quote.likes}
                   dislikes={quote.dislikes}
                   _id={quote._id}
+                  likedByMe={quote.likedByMe}
                 />
               );
             })}

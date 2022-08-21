@@ -11,6 +11,7 @@ import { modalActions } from "../../redux/slices/modal-slice";
 interface ILikeButtonProps {
   likes: number;
   quoteId: string;
+  likedByMe: boolean;
 }
 
 const LikeButton: FC<ILikeButtonProps> = (props) => {
@@ -49,11 +50,8 @@ const LikeButton: FC<ILikeButtonProps> = (props) => {
   };
 
   return (
-    <Button variant="success" onClick={sendLikeHandler}>
-      <div className={classes["buttons-body"]}>
-        <span>{props.likes}</span>
-        <AiOutlineLike />
-      </div>
+    <Button variant={props.likedByMe ? "danger" : "success"} onClick={sendLikeHandler}>
+      <div className={classes["buttons-body"]}>{props.likedByMe ? "dislike" : "like"}</div>
     </Button>
   );
 };

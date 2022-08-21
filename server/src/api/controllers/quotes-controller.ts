@@ -6,7 +6,6 @@ import { validationResult } from "express-validator";
 import TResponse from "../types/TResponse";
 import User from "../models/User";
 import IQuotesList from "../interfaces/vms/IQuotesList";
-import { createCipheriv } from "crypto";
 
 export const getAllQuotes: RequestHandler = async (req, res) => {
   try {
@@ -22,6 +21,7 @@ export const getAllQuotes: RequestHandler = async (req, res) => {
         quote: quote.quote,
         likes: quote.likers.length,
         dislikes: quote.dislikers.length,
+        likedByMe: quote.likers.includes(res.locals.userId!) ? true : false,
       };
       quotesList.push(quoteListItem);
     });

@@ -4,7 +4,7 @@ import authenticateUserAccessToken from "../services/auth/authenticate-user-acce
 import { body } from "express-validator";
 const router = Router();
 
-router.get("/", getAllQuotes);
+router.get("/", authenticateUserAccessToken, getAllQuotes);
 
 router.post(
   "/",

@@ -4,7 +4,6 @@ import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import { MdReportProblem } from "react-icons/md";
 import Button from "react-bootstrap/Button";
 import LikeButton from "./LikeButton";
-import DislikeBUtton from "./DislikeButton";
 
 interface ICardProps {
   _id: string;
@@ -12,13 +11,18 @@ interface ICardProps {
   author: string;
   likes: number;
   dislikes: number;
+  likedByMe: boolean;
 }
 
 const Card: FC<ICardProps> = (props) => {
   return (
     <div className={classes["card-container"]}>
-      <div className={classes["card-head"]}>
-        <h4>{props.author}</h4>
+      <div>
+        <h4 className={classes["card-head"]}>
+          <span>{props.author} </span>
+          <span>{props.likes} likes</span>
+        </h4>
+
         <hr />
       </div>
 
@@ -32,8 +36,7 @@ const Card: FC<ICardProps> = (props) => {
 
       <div className={classes["card-tail"]}>
         <div className={classes["button-container"]}>
-          <LikeButton likes={props.likes} quoteId={props._id} />
-          <DislikeBUtton dislikes={props.dislikes} quoteId={props._id} />
+          <LikeButton likes={props.likes} quoteId={props._id} likedByMe={props.likedByMe} />
         </div>
         <div className={classes["report-container"]}>
           <Button variant="secondary">
