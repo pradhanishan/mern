@@ -6,6 +6,7 @@ import { validationResult } from "express-validator";
 import TResponse from "../types/TResponse";
 import User from "../models/User";
 import IQuotesList from "../interfaces/vms/IQuotesList";
+import { createCipheriv } from "crypto";
 
 export const getAllQuotes: RequestHandler = async (req, res) => {
   try {
@@ -106,6 +107,62 @@ export const deleteQuote: RequestHandler = async (req, res) => {
       success: true,
     };
     return res.status(200).json({ ...response });
+  } catch {
+    let response: TResponse = {
+      statusCode: 400,
+      errors: [{ msg: "invalid id" }],
+      success: false,
+    };
+    return res.status(400).json({ ...response });
+  }
+};
+
+export const likeQuote: RequestHandler = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      let response: TResponse = {
+        statusCode: 400,
+        success: false,
+        errors: errors.array(),
+      };
+      return res.status(400).json({ ...response });
+    }
+    const quoteId = req.body.quoteId;
+    const quoteToUpdate = await Quote.findOne({ _id: quoteId });
+    if (!quoteToUpdate) {
+      let response: TResponse = {
+        statusCode: 400,
+        success: false,
+        errors: [{ msg: `invalid request` }],
+      };
+      return res.status(400).json({ ...response });
+    }
+    const likingUser: string = res.locals.userId!;
+    if (!quoteToUpdate.likers.includes(likingUser)) {
+      console.log("reached");
+      await Quote.updateOne({ _id: quoteId }, { likers: [...quoteToUpdate.likers, likingUser] });
+      if (quoteToUpdate.dislikers.includes(likingUser)) {
+        await Quote.updateOne({ _id: quoteId }, { dislikers: quoteToUpdate.dislikers.filter((x) => x !== likingUser) });
+      }
+      let response: TResponse = {
+        statusCode: 200,
+        success: true,
+      };
+      return res.status(200).json({ ...response });
+    }
+    if (!quoteToUpdate.dislikers.includes(likingUser)) {
+      await Quote.updateOne({ _id: quoteId }, { dislikers: [...quoteToUpdate.dislikers, likingUser] });
+
+      if (quoteToUpdate.likers.includes(likingUser)) {
+        await Quote.updateOne({ _id: quoteId }, { likers: quoteToUpdate.likers.filter((x) => x !== likingUser) });
+      }
+      let response: TResponse = {
+        statusCode: 200,
+        success: true,
+      };
+      return res.status(200).json({ ...response });
+    }
   } catch {
     let response: TResponse = {
       statusCode: 400,

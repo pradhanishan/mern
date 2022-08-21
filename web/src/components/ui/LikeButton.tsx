@@ -1,0 +1,61 @@
+import { FC } from "react";
+import { AiOutlineLike } from "react-icons/ai";
+import Button from "react-bootstrap/Button";
+import classes from "./like-button.module.css";
+import sendRequest from "../../utilities/api/sendRequest";
+import applicationConfig from "../../config/application-config";
+import TRequest from "../../types/TRequest";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { modalActions } from "../../redux/slices/modal-slice";
+
+interface ILikeButtonProps {
+  likes: number;
+  quoteId: string;
+}
+
+const LikeButton: FC<ILikeButtonProps> = (props) => {
+  const dispatch = useAppDispatch();
+
+  const sendLikeHandler = async (event: React.MouseEvent): Promise<void> => {
+    const likeData: { quoteId: string } = {
+      quoteId: props.quoteId,
+    };
+
+    const request: TRequest = {
+      serverUrl: `${applicationConfig.serverUrl}/quotes/like`,
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: localStorage.getItem("accessToken")!,
+      },
+      body: {
+        ...likeData,
+      },
+    };
+
+    const responseData = await sendRequest(request);
+    if (!responseData.success) {
+      dispatch(
+        modalActions.open({
+          isOpen: true,
+          title: "Error",
+          content: "An unknown error occured",
+          link: "/",
+        })
+      );
+      return;
+    }
+    return;
+  };
+
+  return (
+    <Button variant="success" onClick={sendLikeHandler}>
+      <div className={classes["buttons-body"]}>
+        <span>{props.likes}</span>
+        <AiOutlineLike />
+      </div>
+    </Button>
+  );
+};
+
+export default LikeButton;

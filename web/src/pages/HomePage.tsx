@@ -3,9 +3,7 @@ import classes from "./home-page.module.css";
 import Card from "../components/ui/Card";
 import Add from "../components/ui/Add";
 import { useAppSelector } from "../hooks/useAppSelector";
-import sendRequest from "../utilities/api/sendRequest";
 import applicationConfig from "../config/application-config";
-import TRequest from "../types/TRequest";
 import get from "../utilities/api/get";
 
 const HomePage: FC = () => {

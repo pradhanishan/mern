@@ -4,6 +4,7 @@
   border-radius: 8px;
   padding: 1rem;
   border: 3px solid var(--c-secondary);
+  margin-bottom: 1rem;
 }
 
 .card-body {

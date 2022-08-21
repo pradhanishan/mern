@@ -3,7 +3,8 @@ import classes from "./card.module.css";
 import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import { MdReportProblem } from "react-icons/md";
 import Button from "react-bootstrap/Button";
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
+import LikeButton from "./LikeButton";
+import DislikeBUtton from "./DislikeButton";
 
 interface ICardProps {
   _id: string;
@@ -31,18 +32,8 @@ const Card: FC<ICardProps> = (props) => {
 
       <div className={classes["card-tail"]}>
         <div className={classes["button-container"]}>
-          <Button variant="success" className="mx-1">
-            <div className={classes["buttons-body"]}>
-              <span>{props.likes}</span>
-              <AiOutlineLike />
-            </div>
-          </Button>
-          <Button variant="danger" className="mx-1">
-            <div className={classes["buttons-body"]}>
-              <span>{props.dislikes}</span>
-              <AiOutlineDislike />
-            </div>
-          </Button>
+          <LikeButton likes={props.likes} quoteId={props._id} />
+          <DislikeBUtton dislikes={props.dislikes} quoteId={props._id} />
         </div>
         <div className={classes["report-container"]}>
           <Button variant="secondary">
