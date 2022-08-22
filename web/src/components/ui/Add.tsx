@@ -8,9 +8,20 @@ import TRequest from "../../types/TRequest";
 import { modalActions } from "../../redux/slices/modal-slice";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import validateQuote from "../../utilities/validation/validateQuote";
+import { requestActions } from "../../redux/slices/request-slice";
 
-const Add: FC = () => {
+interface IAddProps {
+  lastUpdatedDate: string;
+}
+
+const Add: FC<IAddProps> = (props) => {
   const dispatch = useAppDispatch();
+
+  const nextAvailableDate = new Date(props.lastUpdatedDate);
+  nextAvailableDate.setDate(nextAvailableDate.getDate() + 1);
+  const dt = new Date();
+
+  const readyToPostAgain: boolean = dt.toUTCString() > nextAvailableDate.toUTCString();
 
   //   state to check if there are errors in quote
   const [quoteStatus, setQuoteStatus] = useState<{ isValid: boolean; errors: { msg: string }[] }>({
@@ -91,6 +102,7 @@ const Add: FC = () => {
         link: "/",
       })
     );
+    dispatch(requestActions.increase());
   };
 
   //   reset errors
@@ -121,7 +133,12 @@ const Add: FC = () => {
           </div>
         )}
         <div className={classes["add-buttons-container"]}>
-          <Button className="px-5" variant="success" type="submit">
+          <Button
+            className="px-5"
+            variant={readyToPostAgain ? "success" : "secondary"}
+            disabled={readyToPostAgain ? false : true}
+            type="submit"
+          >
             Add
           </Button>
           <Form.Check

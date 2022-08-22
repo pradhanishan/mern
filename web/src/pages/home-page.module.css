@@ -1,0 +1,7 @@
+@media screen and (min-width: 769px) {
+  .card-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+}

@@ -64,20 +64,38 @@ export const addNewQuote: RequestHandler = async (req, res) => {
       return res.status(400).json({ ...response });
     }
 
+    if (user.lastPostedDate !== undefined && user.lastPostedDate !== null) {
+      let nextAvailableDate = new Date(user.lastPostedDate!);
+      nextAvailableDate.setDate(nextAvailableDate.getDate() + 1);
+      let dt = new Date();
+      const readyToPostAgain: boolean = dt.toUTCString() > nextAvailableDate.toUTCString();
+      if (!readyToPostAgain) {
+        let response: TResponse = {
+          statusCode: 400,
+          errors: [{ msg: `you can only make one post in a day` }],
+          success: false,
+        };
+
+        return res.status(201).json({ ...response });
+      }
+    }
     let dt = new Date();
+    let addedDate = dt.toUTCString();
     const addParams: IQuote = {
       quote: req.body.quote! as string,
       likers: [],
       dislikers: [],
       anonymous: req.body.anonymous! as boolean,
       author: user.username,
-      addedDate: dt.toUTCString(),
+      addedDate,
     };
     await _db.add(Quote, { ...addParams });
+    await User.updateOne({ _id: user._id }, { lastPostedDate: addedDate });
     let response: TResponse = {
       statusCode: 201,
       success: true,
     };
+
     return res.status(201).json({ ...response });
   } catch {
     let response: TResponse = {

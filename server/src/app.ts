@@ -7,6 +7,7 @@ import * as env from "./config/env-config";
 // routes
 import quotesRoute from "./api/routes/quotes-route";
 import authRoute from "./api/routes/auth-route";
+import userRoute from "./api/routes/user-route";
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(json());
 
 app.use("/quotes", quotesRoute);
 app.use("/auth", authRoute);
+app.use("/user", userRoute);
 
 const connectionString: string = `mongodb+srv://${env.DB_USER}:${env.DB_PASSWORD}@cluster0.umh4j1f.mongodb.net/${env.DATABASE_NAME}?retryWrites=true&w=majority`;
 

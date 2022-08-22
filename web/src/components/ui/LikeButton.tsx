@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { AiOutlineLike } from "react-icons/ai";
 import Button from "react-bootstrap/Button";
 import classes from "./like-button.module.css";
 import sendRequest from "../../utilities/api/sendRequest";
@@ -7,6 +6,7 @@ import applicationConfig from "../../config/application-config";
 import TRequest from "../../types/TRequest";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { modalActions } from "../../redux/slices/modal-slice";
+import { requestActions } from "../../redux/slices/request-slice";
 
 interface ILikeButtonProps {
   likes: number;
@@ -46,6 +46,7 @@ const LikeButton: FC<ILikeButtonProps> = (props) => {
       );
       return;
     }
+    dispatch(requestActions.increase());
     return;
   };
 

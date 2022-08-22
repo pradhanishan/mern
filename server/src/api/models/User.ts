@@ -6,7 +6,7 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   refreshToken: { type: String },
   hashedPassword: { type: String, required: true },
-  lastPostedDate: { type: Date },
+  lastPostedDate: { type: String },
 });
 
 const User = model<IUser>("User", userSchema);

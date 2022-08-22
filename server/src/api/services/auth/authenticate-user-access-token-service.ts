@@ -26,7 +26,6 @@ const authenticateUserAccessToken = (req: Request, res: Response, next: NextFunc
 
       // @ts-ignore: missing prop error
       res.locals.userId = user.userId;
-      console.log(res.locals.userId);
       next();
     });
   } catch {

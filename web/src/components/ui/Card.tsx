@@ -20,7 +20,9 @@ const Card: FC<ICardProps> = (props) => {
       <div>
         <h4 className={classes["card-head"]}>
           <span>{props.author} </span>
-          <span>{props.likes} likes</span>
+          <span>
+            {props.likes} {props.likes === 1 ? "like" : "likes"}
+          </span>
         </h4>
 
         <hr />
@@ -31,7 +33,6 @@ const Card: FC<ICardProps> = (props) => {
         <p>{props.quote}</p>
         <FaQuoteRight />
         <hr />
-        <span>test</span>
       </div>
 
       <div className={classes["card-tail"]}>
